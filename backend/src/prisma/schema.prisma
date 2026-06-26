@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model JobPosting {
+  id              String     @id @default(uuid())
+  companyName     String     @map("company_name")
+  designation     String
+  location        String?
+  level           String?
+  industry        String?
+  employeeCount   Int?       @map("employee_count")
+  totalApplicants Int?       @map("total_applicants")
+  skills          JobSkill[]
+
+  @@map("job_postings")
+}
+
+model Skill {
+  id   String     @id @default(uuid())
+  name String     @unique
+  jobs JobSkill[]
+
+  @@map("skills")
+}
+
+model JobSkill {
+  jobPostingId String     @map("job_posting_id")
+  skillId      String     @map("skill_id")
+  jobPosting   JobPosting @relation(fields: [jobPostingId], references: [id])
+  skill        Skill      @relation(fields: [skillId], references: [id])
+
+  @@id([jobPostingId, skillId])
+  @@map("job_skills")
+}
