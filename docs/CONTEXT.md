@@ -1,5 +1,5 @@
 # SkillPulse — Shared Context & Contracts
-**Version:** 1.1 (locked after Phase 1 — do not change without updating this file and re-distributing)
+**Version:** 1.3 (locked after Phase 1 — do not change without updating this file and re-distributing)
 
 > **Upload this file to every Claude account, every time.** This is the single source of truth for types, schema, API shapes, and design tokens. If any account proposes a change, the change must be approved and merged here first — never let an individual account silently diverge.
 
@@ -24,11 +24,38 @@
 | Body | Inter |
 | Numeric data (stat counters, chart values) | JetBrains Mono |
 
-**Spacing scale:** 4 / 8 / 16 / 24 / 32 / 48 (px) — no arbitrary values outside this scale.
+**Spacing scale:** 4 / 8 / 16 / 24 / 32 / 48 (px) — a usage discipline, not a config override. Use Tailwind's existing `p-1/p-2/p-4/p-6/p-8/p-12` etc. for these values; do not replace Tailwind's default spacing scale.
 
 **Icons:** Lucide React only. No emoji. Tint with token colors above (e.g. `text-amber-400` equivalent), not default gray.
 
 **Animation rules:** Count-up on stat numbers, charts draw in on load, subtle scale on skill-pill hover. Nothing beyond this list without a reason tied to the brief.
+
+**⚠️ Tailwind config rule (critical):** Custom colors and fonts MUST be added under `theme.extend`, never under `theme` directly. Setting `theme.colors`/`theme.spacing` directly *replaces* all of Tailwind's built-in values — things like `bg-white`, `p-3`, `w-5 h-5` would silently stop working with no error. Always use this shape:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        bg: '#14151A',
+        surface: '#1C1E26',
+        'accent-primary': '#F2A93B',
+        'accent-secondary': '#4FD1C5',
+        'text-primary': '#EDEDED',
+        'text-secondary': '#9CA3AF',
+      },
+      fontFamily: {
+        display: ['Space Grotesk', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+    },
+  },
+  plugins: [],
+};
+```
 
 ---
 
@@ -39,6 +66,8 @@
 - Hooks/utils: camelCase (`useFetchSkills.ts`)
 - DB tables/columns: snake_case (`job_postings`, `skill_id`)
 - API routes: kebab-case, plural nouns (`/api/job-postings`)
+
+**Database access:** every service file that needs Prisma must import the shared client from `backend/src/prisma/client.js` (`const { prisma } = require('../prisma/client')`) — never call `new PrismaClient()` directly in a service file. Multiple instances can exhaust the connection limit on free-tier hosted Postgres (Neon/Supabase).
 
 ---
 
@@ -179,3 +208,5 @@ export interface ApiError {
 
 - **v1.0** — Locked after Phase 1. All downstream accounts build against this version.
 - **v1.1** — Updated schema/types/API to match the real locked dataset (LinkedIn Tech Jobs, 811 postings): `job_postings` fields now reflect actual columns (`companyName`, `designation`, `level`, `industry`, etc.), and `demand-trend` was replaced with `demand-breakdown` since the dataset has no date field.
+- **v1.2** — Added explicit Tailwind `theme.extend` rule + ready-to-use config snippet, after Account 1's first draft incorrectly overwrote `theme.colors`/`theme.spacing` directly.
+- **v1.3** — Documented the shared Prisma client pattern (`prisma/client.js`), introduced in Phase 3 and retrofitted into Phase 2's `analytics.service.js`. All future service files must use it.

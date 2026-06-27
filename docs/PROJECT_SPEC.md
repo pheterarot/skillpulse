@@ -1,5 +1,5 @@
 # SkillPulse — Project Specification
-**Version:** 1.1
+**Version:** 1.4
 **Status:** Planning complete, build not started
 
 > This file gives full project context. For exact types, API shapes, DB schema, and design tokens that every account must match exactly, see `CONTEXT.md` — that file is the locked source of truth and takes priority if anything here seems to conflict with it.
@@ -87,9 +87,9 @@ skillpulse/
 │   ├── src/
 │   │   ├── routes/               (dashboard.routes.js, skills.routes.js, resume.routes.js)
 │   │   ├── controllers/          (dashboard.controller.js, skills.controller.js, resume.controller.js)
-│   │   ├── services/             (skillMatching.service.js, resumeParser.service.js, analytics.service.js)
+│   │   ├── services/             (skillMatching.service.js, resumeParser.service.js, analytics.service.js, skills.service.js)
 │   │   ├── middleware/           (rateLimiter.js, fileValidation.js, errorHandler.js)
-│   │   ├── prisma/               (schema.prisma, seed.js)
+│   │   ├── prisma/               (schema.prisma, seed.js, client.js)
 │   │   ├── data/                 (raw-dataset.csv)
 │   │   ├── utils/                (textExtraction.js)
 │   │   └── server.js
@@ -173,7 +173,7 @@ Full token system (colors, fonts, spacing, icon rules, animation rules) is defin
 |---|---|---|
 | 1 | Foundation | DB schema, TS types, API contract, design tokens, folder scaffold, `.gitignore`, `.env.example` |
 | 2 | Backend | Dashboard/analytics routes + dataset import script |
-| 3 | Backend | Skills routes |
+| 3 | Backend | Skills routes (`GET /api/skills` **and** `GET /api/job-postings` — both live here, no separate phase for job-postings) |
 | 4 | Backend | Resume upload, parsing, skill-matching logic |
 | 5 | Frontend | Navbar, Footer, shared UI components, routing |
 | 6 | Frontend | Dashboard page + charts |
@@ -184,7 +184,9 @@ Full token system (colors, fonts, spacing, icon rules, animation rules) is defin
 | 11 | Security | Audit pass against Section 11 checklist |
 | 12 | Design polish | Spacing/animation/responsive consistency pass |
 
-**Order matters:** Phase 1 must be 100% complete and locked before Phase 2/3 start. Phases 2-3 and 4 can run in parallel once Phase 1 is locked. Phase 4 (integration onward) only starts once all backend + frontend pieces exist.
+**Order matters:** Phase 1 must be 100% complete and locked before Phase 2/3 start. Phases 2, 3, and 4 can run in parallel once Phase 1 is locked. Phase 9 (Integration onward) only starts once all backend + frontend pieces exist.
+
+**⚠️ Standing rule, every phase from here on:** `PROJECT_SPEC.md`/`CONTEXT.md` define *what* to build, but a fresh account has never seen the actual committed code from earlier phases — it will guess implementation details (how the Prisma client is instantiated, how middleware is wired into `server.js`, error-handling style) if not shown the real files. Every future phase prompt must also attach the actual current contents of: `server.js`, files in `middleware/`, the Prisma client setup, and at least one prior controller/route pair as a style reference. Spec files alone are not enough to prevent drift.
 
 ---
 
@@ -233,3 +235,6 @@ npm run dev
 
 - **v1.0** — Initial spec finalized.
 - **v1.1** — Locked dataset (LinkedIn Tech Jobs, 811 postings). Dropped noisy `AI`/`UI` columns. Replaced "demand over time" with "demand breakdown by seniority/industry" since dataset has no date field.
+- **v1.2** — Clarified Phase 3 explicitly includes `GET /api/job-postings` (previously ambiguous). Added standing rule: every phase prompt from here on must attach real prior-phase code files (server.js, middleware, Prisma setup), not just spec docs.
+- **v1.3** — File structure (Section 5) updated to include `client.js` (shared Prisma connection) and `skills.service.js`, both legitimately added during Phase 3 but missing from the original plan.
+- **v1.4** — Fixed a leftover typo in Section 13's ordering note that said "Phase 4 (integration onward)" — should be Phase 9, since Phase 4 is Resume upload/parsing, not Integration.

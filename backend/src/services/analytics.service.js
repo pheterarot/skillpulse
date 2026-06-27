@@ -10,10 +10,7 @@
  * so controllers can forward them directly with res.json().
  */
 
-const { PrismaClient } = require('@prisma/client');
-
-// Single Prisma client for the lifetime of the server process.
-const prisma = new PrismaClient();
+const { prisma } = require('../prisma/client');
 
 // ─── getTrendingSkills ───────────────────────────────────────────────────────
 
