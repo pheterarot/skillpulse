@@ -1,5 +1,5 @@
 # SkillPulse — Project Specification
-**Version:** 1.4
+**Version:** 1.5
 **Status:** Planning complete, build not started
 
 > This file gives full project context. For exact types, API shapes, DB schema, and design tokens that every account must match exactly, see `CONTEXT.md` — that file is the locked source of truth and takes priority if anything here seems to conflict with it.
@@ -8,11 +8,11 @@
 
 ## 1. Overview
 
-**Problem:** Job seekers (especially fresh grads) often train in skills that don't match what employers actually post for, with no easy way to see which skills are trending in demand or how their resume stacks up against the market.
+**Problem:** Job seekers in tech (especially fresh grads and bootcamp/CS students) often train in skills that don't match what tech employers actually post for, with no easy way to see which tech skills are trending in demand or how their resume stacks up against the market.
 
-**What this app does:** A dashboard that surfaces trending in-demand skills from a real job-postings dataset, lets users explore how skill demand breaks down by seniority level and industry, and lets users upload a resume to see which in-demand skills they already have vs. which ones they're missing.
+**What this app does:** A dashboard that surfaces trending in-demand **tech skills** (React, Node.js, Python, SQL, etc.) from a real tech job-postings dataset, lets users explore how skill demand breaks down by seniority level and industry, and lets users upload a resume to see which in-demand tech skills they already have vs. which ones they're missing.
 
-**Who it's for:** Job seekers and students deciding what to learn next; secondary audience is anyone curious about market trends.
+**Who it's for:** Tech job seekers and CS/IT students deciding what to learn next; secondary audience is anyone curious about tech market trends.
 
 ---
 
@@ -238,3 +238,4 @@ npm run dev
 - **v1.2** — Clarified Phase 3 explicitly includes `GET /api/job-postings` (previously ambiguous). Added standing rule: every phase prompt from here on must attach real prior-phase code files (server.js, middleware, Prisma setup), not just spec docs.
 - **v1.3** — File structure (Section 5) updated to include `client.js` (shared Prisma connection) and `skills.service.js`, both legitimately added during Phase 3 but missing from the original plan.
 - **v1.4** — Fixed a leftover typo in Section 13's ordering note that said "Phase 4 (integration onward)" — should be Phase 9, since Phase 4 is Resume upload/parsing, not Integration.
+- **v1.5** — Overview (Section 1) rewritten to explicitly say "tech skills" / "tech job seekers" instead of generic language. The dataset has always been 100% tech jobs; the problem statement just hadn't caught up to reflect that.
