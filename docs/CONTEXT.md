@@ -1,5 +1,5 @@
 # SkillPulse — Shared Context & Contracts
-**Version:** 1.3 (locked after Phase 1 — do not change without updating this file and re-distributing)
+**Version:** 1.4 (locked after Phase 1 — do not change without updating this file and re-distributing)
 
 > **Upload this file to every Claude account, every time.** This is the single source of truth for types, schema, API shapes, and design tokens. If any account proposes a change, the change must be approved and merged here first — never let an individual account silently diverge.
 
@@ -198,7 +198,7 @@ export interface ApiError {
 
 - General routes: **100 requests / 15 min / IP**
 - `/api/resume/analyze`: **10 requests / 15 min / IP**
-- Allowed file types: `application/pdf`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- Allowed file types: PDF, DOCX — validated by checking the file's actual binary signature (magic bytes: `%PDF` for PDF, `PK\x03\x04` for DOCX), **not** the client-supplied MIME type or file extension, since both are spoofable
 - Max file size: **5MB**
 - CORS: restrict to deployed frontend origin only
 
@@ -210,3 +210,4 @@ export interface ApiError {
 - **v1.1** — Updated schema/types/API to match the real locked dataset (LinkedIn Tech Jobs, 811 postings): `job_postings` fields now reflect actual columns (`companyName`, `designation`, `level`, `industry`, etc.), and `demand-trend` was replaced with `demand-breakdown` since the dataset has no date field.
 - **v1.2** — Added explicit Tailwind `theme.extend` rule + ready-to-use config snippet, after Account 1's first draft incorrectly overwrote `theme.colors`/`theme.spacing` directly.
 - **v1.3** — Documented the shared Prisma client pattern (`prisma/client.js`), introduced in Phase 3 and retrofitted into Phase 2's `analytics.service.js`. All future service files must use it.
+- **v1.4** — Corrected file-validation method to magic-byte checking (matches Phase 4's actual implementation) instead of MIME-type string matching, which is spoofable.
