@@ -1,5 +1,5 @@
 # SkillPulse — Project Specification
-**Version:** 1.6
+**Version:** 1.7
 **Status:** Planning complete, build not started
 
 > This file gives full project context. For exact types, API shapes, DB schema, and design tokens that every account must match exactly, see `CONTEXT.md` — that file is the locked source of truth and takes priority if anything here seems to conflict with it.
@@ -38,6 +38,7 @@
 | Layer | Choice |
 |---|---|
 | Frontend | React + TypeScript + Tailwind CSS |
+| Build tool | Vite |
 | Charts | Recharts |
 | Icons | Lucide React |
 | Routing | React Router |
@@ -241,3 +242,4 @@ npm run dev
 - **v1.4** — Fixed a leftover typo in Section 13's ordering note that said "Phase 4 (integration onward)" — should be Phase 9, since Phase 4 is Resume upload/parsing, not Integration.
 - **v1.5** — Overview (Section 1) rewritten to explicitly say "tech skills" / "tech job seekers" instead of generic language. The dataset has always been 100% tech jobs; the problem statement just hadn't caught up to reflect that.
 - **v1.6** — Added `multer` to the tech stack (Section 3) — required for Express to receive file uploads, missing from the original plan. Also caught: `pdf-parse`/`mammoth` were planned from v1.0 but never actually installed in earlier setup steps — install all three together before running Phase 4.
+- **v1.7** — Added `Vite` to the tech stack (Section 3) — it was always the actual build tool/dev server in use, just never listed. Also: discovered Phase 1's frontend setup was incomplete — folder structure, `tailwind.config.js`, and `types/index.ts` were created, but the actual Vite project scaffolding was never run, so there was no real, runnable frontend until this was caught and fixed (separate commit) right before Phase 5 started.
